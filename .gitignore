@@ -1,0 +1,10 @@
+.idea
+.settings
+.vscode
+target
+tmp
+work
+.classpath
+.factorypath
+.project
+autocancel.iml
