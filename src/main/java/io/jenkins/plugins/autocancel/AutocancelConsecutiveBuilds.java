@@ -1,11 +1,15 @@
 package io.jenkins.plugins.autocancel;
 
+import java.io.PrintStream;
+import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
+import hudson.console.ModelHyperlinkNote;
 import hudson.model.*;
 import io.jenkins.plugins.autocancel.interruption.SupersededInterruption;
+import jenkins.model.Jenkins;
 import org.jenkinsci.plugins.workflow.steps.*;
 import org.kohsuke.stapler.DataBoundConstructor;
 
@@ -32,7 +36,10 @@ public class AutocancelConsecutiveBuilds extends Step {
         @Override
         protected Void run() throws Exception {
             Run currentBuild = getContext().get(Run.class);
+            TaskListener task = getContext().get(TaskListener.class);
 
+            PrintStream logger = task.getLogger();
+            URI jenkinsUri = new URI(Jenkins.get().getRootUrl());
             int currentBuildNumber = currentBuild.getNumber();
             Job currentJob = currentBuild.getParent();
             Collection<Run> builds = currentJob.getBuildsAsMap().values();
@@ -40,8 +47,16 @@ public class AutocancelConsecutiveBuilds extends Step {
             for (Run build : builds) {
                 if (build.isBuilding() && build.number < currentBuildNumber) {
                     final String message = String.format(MESSAGE_TEMPLATE, build.number, currentBuildNumber);
+                    final String buildUrl = jenkinsUri.resolve(build.getUrl()).toString();
 
-                    build.getExecutor().interrupt(Result.ABORTED, new SupersededInterruption(message));
+                    logger.println(String.format("Stopping job %s", ModelHyperlinkNote.encodeTo(buildUrl, build.getDisplayName())));
+
+                    try {
+                        build.getExecutor().interrupt(Result.ABORTED, new SupersededInterruption(message));
+                    } catch (Exception e) {
+                        logger.println(String.format("Failed to stop job %s", ModelHyperlinkNote.encodeTo(buildUrl, build.getDisplayName())));
+                        logger.println(e.getMessage());
+                    }
                     build.setDisplayName(message);
                 }
             }
