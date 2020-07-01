@@ -3,7 +3,10 @@
 
 # jenkins-autocancel-plugin
 
-Autocancel builds with ease
+Autocancel builds with ease, heavily inspired by https://stackoverflow.com/a/48956042/2327301
+
+While this can be achieved through Jenkinsfiles with a shared jenkins library, it requires adding multiple signatures to script approvals which can be potentially dangerous.
+A plugin fits better and can be reused across different kinds of jobs and jenkins instances. 
 
 ## Steps
 
