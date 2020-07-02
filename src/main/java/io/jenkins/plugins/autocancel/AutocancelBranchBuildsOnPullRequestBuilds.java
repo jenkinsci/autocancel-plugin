@@ -10,6 +10,7 @@ import hudson.console.ModelHyperlinkNote;
 import hudson.model.*;
 import io.jenkins.plugins.autocancel.interruption.SupersededInterruption;
 import jenkins.model.Jenkins;
+import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.jenkinsci.plugins.workflow.steps.*;
 import org.kohsuke.stapler.DataBoundConstructor;
 
@@ -57,9 +58,9 @@ public class AutocancelBranchBuildsOnPullRequestBuilds extends Step {
 
                     logger.println(String.format("Found matching job: %s", ModelHyperlinkNote.encodeTo(jobUrl, job.getDisplayName())));
 
-                    Collection<Run> builds = job.getBuildsAsMap().values();
+                    Collection<WorkflowRun> builds = job.getBuildsAsMap().values();
 
-                    for (Run build : builds) {
+                    for (WorkflowRun build : builds) {
                         if (build.isBuilding()) {
                             final String message = String.format(MESSAGE_TEMPLATE, build.number, pullRequestJob.getName(), currentBuildNumber);
                             final String buildUrl = jenkinsUri.resolve(build.getUrl()).toString();
@@ -68,6 +69,7 @@ public class AutocancelBranchBuildsOnPullRequestBuilds extends Step {
 
                             try {
                                 build.getExecutor().interrupt(Result.ABORTED, new SupersededInterruption(message));
+                                build.doTerm();
                             } catch (Exception e) {
                                 logger.println(String.format("Failed to stop job %s", ModelHyperlinkNote.encodeTo(buildUrl, build.getDisplayName())));
                                 logger.println(e.getMessage());
