@@ -1,4 +1,4 @@
-![Build](https://github.com/adidas/jenkins-autocancel-plugin/workflows/Build/badge.svg)
+![Build](https://github.com/jenkinsci/autocancel-plugin/workflows/Build/badge.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # jenkins-autocancel-plugin
