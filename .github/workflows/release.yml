@@ -9,15 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run: mkdir -p ~/.ssh
-      - run: |
-          cat <<EOF > ~/.ssh/id_rsa
-          ${{ secrets.SSH_KEY }}
-          EOF
-      - run: chmod 400 ~/.ssh/id_rsa
       - uses: actions/checkout@v2
-        with:
-          ref: master
       - uses: actions/setup-java@v1
         with:
           java-version: 1.8
@@ -53,7 +45,7 @@ jobs:
           server-id: maven.jenkins-ci.org
           server-username: MVN_USERNAME
           server-password: MVN_PASSWORD
-      - run: mvn -B release:prepare -DpushChanges=false release:perform
+      - run: mvn -B source:jar javadoc:jar deploy
         env:
           MVN_USERNAME: ${{ secrets.MVN_USERNAME }}
           MVN_PASSWORD: ${{ secrets.MVN_PASSWORD }}

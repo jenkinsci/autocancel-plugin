@@ -2,18 +2,12 @@ package io.jenkins.plugins.autocancel;
 
 import hudson.model.Cause;
 import hudson.model.Result;
-import hudson.model.Slave;
-import hudson.model.queue.QueueTaskFuture;
-import hudson.triggers.SCMTrigger;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
-
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 
 public class AutocancelConsecutiveBuildsTest {
     @Rule
