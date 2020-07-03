@@ -1,1 +1,2 @@
-buildPlugin(configurations: buildPlugin.recommendedConfigurations())
+// fixed to linux while problems with windows fs persist
+buildPlugin(platforms: [ 'linux' ])
