@@ -45,7 +45,7 @@ jobs:
           server-id: maven.jenkins-ci.org
           server-username: MVN_USERNAME
           server-password: MVN_PASSWORD
-      - run: mvn -B deploy
+      - run: mvn -B source:jar javadoc:jar deploy
         env:
           MVN_USERNAME: ${{ secrets.MVN_USERNAME }}
           MVN_PASSWORD: ${{ secrets.MVN_PASSWORD }}
