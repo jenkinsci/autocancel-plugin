@@ -29,6 +29,17 @@
             <url>https://opensource.org/licenses/MIT</url>
         </license>
     </licenses>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <dependencyManagement>
         <dependencies>
             <dependency>
