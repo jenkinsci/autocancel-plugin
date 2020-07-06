@@ -57,7 +57,7 @@ public class AutocancelConsecutiveBuilds extends Step {
                         if (executor != null) {
                             executor.interrupt(Result.ABORTED, new SupersededInterruption(message));
                         }
-                        build.doTerm();
+                        build.doKill();
                     } catch (Exception e) {
                         logger.println(String.format("Failed to stop job %s", ModelHyperlinkNote.encodeTo(buildUrl, build.getDisplayName())));
                         logger.println(e.getMessage());
